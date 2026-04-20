@@ -1,11 +1,13 @@
+import { httpError } from "../middleware/error.js";
+
 export function toCents(input) {
-  if (input == null) throw new Error("Amount is required");
+  if (input == null) throw httpError(400, "Amount is required");
   const num = typeof input === "number" ? input : Number(input);
-  if (!Number.isFinite(num)) throw new Error("Amount must be a number");
-  if (num <= 0) throw new Error("Amount must be greater than zero");
+  if (!Number.isFinite(num)) throw httpError(400, "Amount must be a number");
+  if (num <= 0) throw httpError(400, "Amount must be greater than zero");
   const cents = Math.round(num * 100);
-  if (cents < 1) throw new Error("Amount must be at least 0.01");
-  if (cents > 100_000_000_00) throw new Error("Amount too large");
+  if (cents < 1) throw httpError(400, "Amount must be at least 0.01");
+  if (cents > 100_000_000_00) throw httpError(400, "Amount too large");
   return cents;
 }
 

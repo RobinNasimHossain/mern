@@ -265,6 +265,13 @@ router.put("/:id", async (req, res) => {
       });
     }
 
+    if (err.code === 11000) {
+      return res.status(409).json({
+        error: "Duplicate email (ইমেইল ইতিমধ্যে আছে)",
+        field: err.keyValue,
+      });
+    }
+
     res.status(500).json({ error: err.message });
   }
 });

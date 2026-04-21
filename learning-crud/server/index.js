@@ -152,7 +152,7 @@ app.use((err, _req, res, _next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log("✅ MongoDB connected (MongoDB সংযুক্ত):", MONGODB_URI);
+    console.log("✅ MongoDB connected (MongoDB সংযুক্ত)");
     app.listen(PORT, () => {
       console.log(`🚀 Server running (সার্ভার চালু): http://localhost:${PORT}`);
       console.log(

@@ -34,7 +34,12 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from "url";
 import studentRoutes from "./routes/students.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ─── Configuration (কনফিগারেশন) ────────────────────────────
 // 🇧🇩 পরিবেশ ভেরিয়েবল থেকে মান নিন, না থাকলে ডিফল্ট ব্যবহার করুন
@@ -63,7 +68,8 @@ const app = express();
  *     ভুল JSON পাঠালে 400 ত্রুটি আসবে।
  *     ফিক্স: Postman/frontend থেকে সঠিক JSON পাঠান।
  */
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const allowedOrigins = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -93,18 +99,16 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", time: new Date().toISOString() });
 });
 
-// ─── 404 Handler (৪০৪ হ্যান্ডলার) ─────────────────────────
-/**
- * 🇧🇩 যদি কোনো রাউট খুঁজে না পাওয়া যায় তাহলে এই middleware চলবে।
- *   ডিবাগিং: আপনি যদি 404 পান — URL সঠিক কি না পরীক্ষা করুন।
- *   সাধারণ ভুল: /api/student (s বাদ) বনাম /api/students
- *
- * 🇬🇧 If no route matches, this middleware runs.
- *   Debugging: If you get 404 — verify the URL is correct.
- *   Common mistake: /api/student (no s) vs /api/students
- */
-app.use((_req, res) => {
-  res.status(404).json({ error: "Route not found (রাউট পাওয়া যায়নি)" });
+// ─── Serve Frontend in Production (প্রোডাকশনে ফ্রন্টএন্ড সার্ভ) ──
+const clientDist = path.join(__dirname, "..", "client", "dist");
+app.use(express.static(clientDist));
+
+// ─── 404 / SPA Fallback Handler ─────────────────────────────
+app.use((req, res) => {
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({ error: "Route not found (রাউট পাওয়া যায়নি)" });
+  }
+  res.sendFile(path.join(clientDist, "index.html"));
 });
 
 // ─── Global Error Handler (গ্লোবাল ত্রুটি হ্যান্ডলার) ────

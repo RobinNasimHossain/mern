@@ -1,74 +1,75 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { MdFlightTakeoff } from "react-icons/md";
 
-function navClass({ isActive }) {
-  return [
-    "rounded-md px-3 py-1.5 text-sm font-medium",
-    isActive
-      ? "bg-brand-50 text-brand-700"
-      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-  ].join(" ");
-}
+const links = [
+  { to: "/", label: "Home" },
+  { to: "/packages", label: "Packages" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-  function handleLogout() {
-    logout();
-    navigate("/login", { replace: true });
-  }
+  const navLinkClass = ({ isActive }) =>
+    `text-sm font-medium transition ${
+      isActive
+        ? "text-brand-600"
+        : "text-slate-700 hover:text-brand-600"
+    }`;
 
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
-            SB
-          </span>
-          <span className="text-base font-semibold tracking-tight text-slate-900">
-            Shoreline Bank
+          <MdFlightTakeoff className="h-7 w-7 text-brand-600" />
+          <span className="text-xl font-bold tracking-tight text-slate-900">
+            Wanderlust<span className="text-brand-600"> Travels</span>
           </span>
         </Link>
-        {user ? (
-          <nav className="flex items-center gap-1">
-            <NavLink to="/" end className={navClass}>
-              Dashboard
+
+        <nav className="hidden items-center gap-8 md:flex">
+          {links.map((l) => (
+            <NavLink key={l.to} to={l.to} className={navLinkClass} end={l.to === "/"}>
+              {l.label}
             </NavLink>
-            <NavLink to="/transfer" className={navClass}>
-              Transfer
-            </NavLink>
-            <NavLink to="/deposit" className={navClass}>
-              Deposit
-            </NavLink>
-            <NavLink to="/withdraw" className={navClass}>
-              Withdraw
-            </NavLink>
-            <div className="ml-3 flex items-center gap-3 border-l border-slate-200 pl-3">
-              <span className="text-sm text-slate-600">{user.name}</span>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="btn-secondary py-1.5 text-xs"
-              >
-                Log out
-              </button>
-            </div>
-          </nav>
-        ) : (
-          <nav className="flex items-center gap-2">
-            <NavLink to="/login" className={navClass}>
-              Log in
-            </NavLink>
-            <NavLink
-              to="/register"
-              className="btn-primary px-3 py-1.5 text-xs"
-            >
-              Open account
-            </NavLink>
-          </nav>
-        )}
+          ))}
+          <Link to="/packages" className="btn-primary">
+            Book Now
+          </Link>
+        </nav>
+
+        <button
+          className="inline-flex items-center justify-center rounded-md p-2 text-slate-700 md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          {open ? <HiOutlineX className="h-6 w-6" /> : <HiOutlineMenu className="h-6 w-6" />}
+        </button>
       </div>
+
+      {open && (
+        <nav className="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
+          <div className="flex flex-col gap-4">
+            {links.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={navLinkClass}
+                end={l.to === "/"}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </NavLink>
+            ))}
+            <Link to="/packages" className="btn-primary text-center" onClick={() => setOpen(false)}>
+              Book Now
+            </Link>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

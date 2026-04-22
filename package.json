@@ -1,8 +1,8 @@
 {
-  "name": "mern-banking-app",
+  "name": "wanderlust-travels",
   "private": true,
   "version": "0.1.0",
-  "description": "Real-world MERN banking app (MongoDB, Express, React, Node.js).",
+  "description": "Full-stack MERN travel agency website – browse packages, book trips, explore destinations.",
   "scripts": {
     "install:all": "npm --prefix server install && npm --prefix client install",
     "dev:server": "npm --prefix server run dev",

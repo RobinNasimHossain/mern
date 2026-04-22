@@ -6,13 +6,11 @@ async function main() {
   await connectDb();
   const app = createApp();
   app.listen(config.port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Banking API listening on http://localhost:${config.port}`);
+    console.log(`Wanderlust API listening on http://localhost:${config.port}`);
   });
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error("Failed to start server:", err);
   process.exit(1);
 });

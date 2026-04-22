@@ -35,7 +35,7 @@ export default function Packages() {
       .then((res) => setPackages(res.data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [category, sort, search, searchParams]);
+  }, [category, sort, searchParams]);
 
   const handleSearch = (e) => {
     e.preventDefault();

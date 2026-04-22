@@ -2,6 +2,10 @@ const express = require('express');
 const Package = require('../models/Package');
 const router = express.Router();
 
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 router.get('/', async (req, res) => {
   try {
     const { category, continent, featured, search, sort, limit } = req.query;
@@ -10,10 +14,11 @@ router.get('/', async (req, res) => {
     if (continent) filter.continent = continent;
     if (featured === 'true') filter.featured = true;
     if (search) {
+      const safeSearch = escapeRegex(search);
       filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { destination: { $regex: search, $options: 'i' } },
-        { country: { $regex: search, $options: 'i' } },
+        { title: { $regex: safeSearch, $options: 'i' } },
+        { destination: { $regex: safeSearch, $options: 'i' } },
+        { country: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 

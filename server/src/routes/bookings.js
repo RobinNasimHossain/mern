@@ -10,6 +10,10 @@ router.post('/', async (req, res) => {
     const pkg = await Package.findById(packageId);
     if (!pkg) return res.status(404).json({ error: 'Package not found' });
 
+    if (!guests || guests < 1 || guests > pkg.maxGroupSize) {
+      return res.status(400).json({ error: `Guests must be between 1 and ${pkg.maxGroupSize}` });
+    }
+
     const totalPrice = pkg.price * guests;
 
     const booking = await Booking.create({

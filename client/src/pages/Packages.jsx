@@ -27,7 +27,8 @@ export default function Packages() {
     const params = new URLSearchParams();
     if (category !== 'all') params.set('category', category);
     if (sort) params.set('sort', sort);
-    if (search) params.set('search', search);
+    const searchTerm = searchParams.get('search');
+    if (searchTerm) params.set('search', searchTerm);
     const continent = searchParams.get('continent');
     if (continent) params.set('continent', continent);
 

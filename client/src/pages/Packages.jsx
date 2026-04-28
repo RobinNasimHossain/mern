@@ -23,6 +23,10 @@ export default function Packages() {
   const [search, setSearch] = useState(searchParams.get('search') || '');
 
   useEffect(() => {
+    setSearch(searchParams.get('search') || '');
+  }, [searchParams]);
+
+  useEffect(() => {
     setLoading(true);
     const params = new URLSearchParams();
     if (category !== 'all') params.set('category', category);

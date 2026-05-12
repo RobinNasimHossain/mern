@@ -44,9 +44,8 @@ export default function Packages() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams();
     if (search) newParams.set('search', search);
-    else newParams.delete('search');
     setSearchParams(newParams);
   };
 

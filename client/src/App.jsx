@@ -9,6 +9,7 @@ import Deposit from "./pages/Deposit.jsx";
 import Withdraw from "./pages/Withdraw.jsx";
 import Transfer from "./pages/Transfer.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import RenovationSchedule from "./pages/RenovationSchedule.jsx";
 
 export default function App() {
   return (
@@ -55,6 +56,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Transfer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/renovation"
+            element={
+              <ProtectedRoute>
+                <RenovationSchedule />
               </ProtectedRoute>
             }
           />

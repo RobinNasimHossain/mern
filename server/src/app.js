@@ -7,6 +7,7 @@ import { config } from "./config.js";
 import authRoutes from "./routes/auth.js";
 import accountRoutes from "./routes/accounts.js";
 import transactionRoutes from "./routes/transactions.js";
+import renovationRoutes from "./routes/renovations.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 
 export function createApp() {
@@ -37,6 +38,7 @@ export function createApp() {
   app.use("/api/auth", authLimiter, authRoutes);
   app.use("/api/accounts", accountRoutes);
   app.use("/api/transactions", transactionRoutes);
+  app.use("/api/renovations", renovationRoutes);
 
   app.use(notFound);
   app.use(errorHandler);

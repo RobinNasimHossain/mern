@@ -44,6 +44,9 @@ export default function Navbar() {
             <NavLink to="/withdraw" className={navClass}>
               Withdraw
             </NavLink>
+            <NavLink to="/renovation" className={navClass}>
+              Renovation
+            </NavLink>
             <div className="ml-3 flex items-center gap-3 border-l border-slate-200 pl-3">
               <span className="text-sm text-slate-600">{user.name}</span>
               <button

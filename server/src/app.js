@@ -1,3 +1,5 @@
+import { fileURLToPath } from "url";
+import path from "path";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -39,6 +41,15 @@ export function createApp() {
   app.use("/api/accounts", accountRoutes);
   app.use("/api/transactions", transactionRoutes);
   app.use("/api/renovations", renovationRoutes);
+
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const distPath = path.join(__dirname, "..", "dist");
+  app.use(express.static(distPath));
+  app.get(/^(?!\/api).*/, (_req, res, next) => {
+    res.sendFile(path.join(distPath, "index.html"), (err) => {
+      if (err) next();
+    });
+  });
 
   app.use(notFound);
   app.use(errorHandler);

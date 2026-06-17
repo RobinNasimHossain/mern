@@ -1,0 +1,13 @@
+{
+  "name": "mern-crud-learning",
+  "private": true,
+  "version": "1.0.0",
+  "description": "MERN CRUD Learning App with Bangla + English Debugging Guide (শিক্ষার্থী ম্যানেজার)",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "lint": "npm --prefix client run lint",
+    "build": "npm --prefix client run build"
+  }
+}
